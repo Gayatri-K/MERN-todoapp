@@ -14,12 +14,12 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
 const connection = mongoose.connection;
 
-connection.once('open', function() {
+connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
 
-todoRoutes.route('/').get(function(req, res) {
-    Todo.find(function(err, todos) {
+todoRoutes.route('/').get((req, res) => {
+    Todo.find((err, todos) => {
         if (err) {
             console.log(err);
         } else {
@@ -28,14 +28,14 @@ todoRoutes.route('/').get(function(req, res) {
     });
 });
 
-todoRoutes.route('/:id').get(function(req, res) {
+todoRoutes.route('/:id').get((req, res) => {
     let id = req.params.id;
-    Todo.findById(id, function(err, todo) {
+    Todo.findById(id, (err, todo) => {
         res.json(todo);
     });
 });
 
-todoRoutes.route('/add').post(function(req, res) {
+todoRoutes.route('/add').post((req, res) => {
     let todo = new Todo(req.body);
     todo.save()
         .then(todo => {
@@ -46,8 +46,8 @@ todoRoutes.route('/add').post(function(req, res) {
         });
 });
 
-todoRoutes.route('/update/:id').post(function(req, res) {
-    Todo.findById(req.params.id, function(err, todo) {
+todoRoutes.route('/update/:id').post((req, res) => {
+    Todo.findById(req.params.id, (err, todo) => {
         if (!todo)
             res.status(404).send('data is not found');
         else
@@ -67,6 +67,6 @@ todoRoutes.route('/update/:id').post(function(req, res) {
 
 app.use('/todos', todoRoutes);
 
-app.listen(PORT, function() {
+app.listen(PORT, () => {
     console.log("Server is running on Port: " + PORT);
 });
